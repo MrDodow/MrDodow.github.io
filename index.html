@@ -3,119 +3,9 @@
 	<head>
 		<title>Face tracker</title>
 		<meta charset="utf-8">
-		<link href="./styles/bootstrap.min.css" rel="stylesheet" type="text/css">
-		<style>
-			@import url(https://fonts.googleapis.com/css?family=Lato:300italic,700italic,300,700);
+		<link href="./View/bootstrap.min.css" rel="stylesheet" type="text/css">
+		<link href="./View/viewStyle.css" rel="stylesheet" type="text/css" >
 
-			body {
-				font-family: 'Lato';
-				background-color: #f0f0f0;
-				margin: 0px auto;
-				max-width: 1150px;
-			}
-
-			#overlay {
-				position: absolute;
-				top: 0px;
-				left: 0px;
-				-o-transform : scaleX(-1);
-				-webkit-transform : scaleX(-1);
-				transform : scaleX(-1);
-				-ms-filter : fliph; /*IE*/
-				filter : fliph; /*IE*/
-
-				
-			}
-
-			#videoel {
-				-o-transform : scaleX(-1);
-				-webkit-transform : scaleX(-1);
-				transform : scaleX(-1);
-				-ms-filter : fliph; /*IE*/
-				filter : fliph; /*IE*/
-
-				
-			}
-
-			/* the midddle part */
-			#container {
-				position : relative;
-				/* margin-left: 17%; */
-				width : 370px;
-				/*margin : 0px auto;*/
-			}
-
-			/* the whole page */
-			#content {
-				margin-top : 50px;
-				margin-left : auto;
-				margin-right : auto;
-				max-width: 600px;
-			}
-
-			h2 {
-				font-weight : 400;
-			}
-
-			.btn {
-				font-family: 'Lato';
-				font-size: 16px;
-			}
-
-			/* button line */
-			#controls {
-				/* text-align : center; */
-				margin-left: 22%;
-			}
-
-			/* emotion chart */
-			#emotion_container {
-				width: 400px;
-			}
-
-			#emotion_icons {
-				height: 50px;
-				padding-left: 40px;
-			}
-
-			.emotion_icon {
-				width : 40px;
-				height : 40px;
-				margin-top: 5px;
-				/*margin-left : 13px;*/
-				margin-left : 35px;
-			}
-
-			#emotion_chart, #emotion_icons {
-				margin: 0 auto;
-				width : 400px;
-			}
-
-			#icon1, #icon2, #icon3, #icon4 {
-				visibility : hidden;
-			}
-
-			/* d3 */
-			.bar {
-				fill : steelblue;
-				fill-opacity : .9;
-			}
-
-			/* 对 input 框进行修饰 */
-			input[type=text] {
-   				width: 66.5%;
-   				padding: 12px 20px;
-   				margin: 8px 0;
-   				box-sizing: border-box;
-   				border: none;
-   				background-color: #3CBC8D;
-   				color: white;
-				font-size: 15px;
-				text-align: center;
-}
-
-		/* 初始化 */
-		</style>
 		<script>
 			if (window.location.protocol == "file:") {
 				// alert("You seem to be running this example directly from a file. Note that these examples only work when served from a server or localhost due to canvas cross-domain restrictions.");
@@ -123,35 +13,29 @@
 				window.location.protocol = "https";
 			}
 		</script>
-		<script type="text/javascript">
-
-			var _gaq = _gaq || [];
-			_gaq.push(['_setAccount', 'UA-32642923-1']);
-			_gaq.push(['_trackPageview']);
-
-			(function() {
-				var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-				ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-			})();
-		</script>
 
 	</head>
 	<body>
-		<script src="./js/utils.js"></script>
-		<script src="./js/clmtrackr.js"></script>
-		<script src="./js/model_pca_20_svm.js"></script>
-		<script src="./js/Stats.js"></script>
-		<script src="./js/d3.min.js"></script>
-		<script src="./js/emotion_classifier.js"></script>
-		<script src="./js/emotionmodel.js"></script>
-		
+		<audio  src="./View/BGM.ogg" autoplay loop = -1 ></audio>
+		<script src="./Controller/utils.js"></script>
+		<script src="./Controller/clmtrackr.js"></script>
+		<script src="./Controller/model_pca_20_svm.js"></script>
+		<script src="./Controller/Stats.js"></script>
+		<script src="./Controller/d3.min.js"></script>
+		<script src="./Controller/emotion_classifier.js"></script>
+		<script src="./Controller/emotionmodel.js"></script>
+		<!-- <script src="./Controller/main.js"></script> -->
 		<!-- the whole page  -->
 		<div id="content">
 			<h2 id="name">Relaxx your face !</h2>
 
 			<!-- here is a command line !! -->
-			<input type="text" id="command" value="Are you ready?" size="50" readonly >
+			<input type="text" id="command" value="Are you ready? Click the relax button" size="50" readonly >
+			<!-- score system -->
+
+			<input type="text" id="score"  readonly>
+			<!-- <strong id="score"> Your score: </strong> -->
+
 
 			<!-- The middle part -->
 			<div id="container">
@@ -161,329 +45,637 @@
 			</div>
 
 
+
 			<!-- emotion chart -->
 			<div id="emotion_container">
 				<div id="emotion_icons">
-					<img class="emotion_icon" id="icon1" src="./pic/icon_angry.png">
-					<img class="emotion_icon" id="icon2" src="./pic/icon_sad.png">
-					<img class="emotion_icon" id="icon3" src="./pic/icon_surprised.png">
-					<img class="emotion_icon" id="icon4" src="./pic/icon_happy.png">
+					<img class="emotion_icon" id="icon1" src="./View/icon_angry.png">
+					<img class="emotion_icon" id="icon2" src="./View/icon_sad.png">
+					<img class="emotion_icon" id="icon3" src="./View/icon_surprised.png">
+					<img class="emotion_icon" id="icon4" src="./View/icon_happy.png">
 				</div>
 				<div id='emotion_chart'></div>
 			</div>
 
 			<!-- button layer -->
-			<!-- button 触发 startVideo()-->
+			<!-- button will trigger startVideo()-->
 			<div id="controls">
 				<input class="btn" type="button" value="relaxx now!" disabled="disabled" onclick="startVideo()" id="startbutton"></input>
 			</div>
 
-			<script>
-
-				// 调取text 
-				var text = document.getElementById('command');
-				text.value = "Are you ready? ";
-
-				// videoel 即调用前置摄像头
-				var vid = document.getElementById('videoel');
-				var vid_width = vid.width;
-				var vid_height = vid.height;
-
-				// overlay 是覆盖 videoel
-				var overlay = document.getElementById('overlay');
-				var overlayCC = overlay.getContext('2d');
-
-				// check and set up video/webcam
-				function enablestart() {
-					var startbutton = document.getElementById('startbutton');
-					// 重新赋值 button 
-					startbutton.value = "relaxx now";
-					startbutton.disabled = null;
+		</div>
+		<script>
+			
+			// get the text of command
+			var text = document.getElementById('command');
+			text.value = "Are you ready? Click the button 😉 ";
+			
+			// videoel use the front camera
+			var vid = document.getElementById('videoel');
+			var vid_width = vid.width;
+			var vid_height = vid.height;
+			
+			// overlay can cover videoel
+			var overlay = document.getElementById('overlay');
+			
+			var overlayCC = overlay.getContext('2d');
+			
+			// check and set up video/webcam
+			function enablestart() {
+				var startbutton = document.getElementById('startbutton');
+				// revalue the button 
+				startbutton.value = "relaxx now";
+				startbutton.disabled = null;
+			}
+			
+			// resize overlay and video if proportions are different
+			// keep same height, just change width
+			function adjustVideoProportions() {
+				var proportion = vid.videoWidth/vid.videoHeight;
+				vid_width = Math.round(vid_height * proportion);
+				vid.width = vid_width;
+				overlay.width = vid_width;
+			}
+			
+			// add camera stream if getUserMedia succeeded
+			function gumSuccess( stream ) {
+							
+				if ("srcObject" in vid) {
+					vid.srcObject = stream;
+						} 
+				else {
+					vid.src = (window.URL && window.URL.createObjectURL(stream));
+						}
+				vid.onloadedmetadata = function() {
+					adjustVideoProportions();
+					vid.play();
 				}
-
-				// resize overlay and video if proportions are different
-				// keep same height, just change width
-				function adjustVideoProportions() {
-					var proportion = vid.videoWidth/vid.videoHeight;
-					vid_width = Math.round(vid_height * proportion);
-					vid.width = vid_width;
-					overlay.width = vid_width;
-				}
-
-				// add camera stream if getUserMedia succeeded
-				function gumSuccess( stream ) {
-				
-					if ("srcObject" in vid) {
-						vid.srcObject = stream;
-					} else {
-						vid.src = (window.URL && window.URL.createObjectURL(stream));
-					}
-					vid.onloadedmetadata = function() {
-						adjustVideoProportions();
-						vid.play();
-					}
-					vid.onresize = function() {
-						adjustVideoProportions();
-						if (trackingStarted) {
-							ctrack.stop();
-							ctrack.reset();
-							ctrack.start(vid);
+				vid.onresize = function() {
+					adjustVideoProportions();
+					if (trackingStarted) {
+						ctrack.stop();
+						ctrack.reset();
+						ctrack.start(vid);
 						}
 					}
 				}
-				function gumFail() {
-					alert("There was some problem trying to fetch video from your webcam. If you have a webcam, please make sure to accept when the browser asks for access to your webcam.");
+
+			// Fail to get video from webcam
+			function gumFail() {
+					setCommandValue("Fail to fetch video from webcam, plz try again");
 				}
-
-
-				navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
-				window.URL = window.URL || window.webkitURL || window.msURL || window.mozURL;
-
-				// check for camerasupport
-				if (navigator.mediaDevices) {
-					navigator.mediaDevices.getUserMedia({video : true}).then(gumSuccess).catch(gumFail);
-				} else if (navigator.getUserMedia) {
-					navigator.getUserMedia({video : true}, gumSuccess, gumFail);
-				} else {
-					alert("This applicaiton depends on getUserMedia, which your browser does not seem to support. :(");
+			
+			navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
+			window.URL = window.URL || window.webkitURL || window.msURL || window.mozURL;
+			
+			// check for camerasupport
+			if (navigator.mediaDevices) {
+				navigator.mediaDevices.getUserMedia({video : true})
+				.then(gumSuccess)
+				.catch(gumFail);
+			} else if (navigator.getUserMedia) {
+				navigator.getUserMedia({video : true}, gumSuccess, gumFail);
+				} 
+			else {
+				setCommandValue("your browser doesn't seem to support this game :(");
 				}
-  
-				// vid is videoel, the middle part
-				vid.addEventListener('canplay', enablestart, false);
-
-				//  setup of emotion detection
-				// 设置特征向量 9,11 不正规化，更好地检测眉毛。
-				pModel.shapeModel.nonRegularizedVectors.push(9);
-				pModel.shapeModel.nonRegularizedVectors.push(11);
-
-				var ctrack = new clm.tracker({useWebGL : true});
-				ctrack.init(pModel);
-				var trackingStarted = false;
-
-				
-				// 添加一个计时器，用于更新 command 里面的文字
-
-				// set command value
-				function setCommandValue(commandValue){
+			  
+			// vid is videoel, the middle part
+			vid.addEventListener('canplay', enablestart, false);
+			
+			//  setup of emotion detection
+			// set the vectors 9 and 11 nonregular, for better to detect the eyebrows
+			pModel.shapeModel.nonRegularizedVectors.push(9);
+			pModel.shapeModel.nonRegularizedVectors.push(11);
+			
+			var ctrack = new clm.tracker({useWebGL : true});
+			ctrack.init(pModel);
+			var trackingStarted = false;
+			
+							
+			// add a time counter to update the command text
+			
+			// set command value
+			function setCommandValue(commandValue){
 				document.getElementById("command").value = commandValue;
-				}
-				
-				// Are you ready? --> Now, follow my order --> Show your happy to endless work --> Good, what a positive attitude
-				// Show your surprise for overtime today --> Relax, it's normal 
-				// See your boss's Ferrari and your bike, show your sadness --> Work hard! --> Then your boss can buy another new one! 
-				function startVideo() {
-					// start video
-					vid.play();
-					// start tracking
-					ctrack.start(vid);
-					trackingStarted = true;
-					// start loop to draw face
-					drawLoop();
-					setCommandValue("System is loading ...");
-					var t2 = setTimeout("setCommandValue('Now, follow my order')",4000);
-					var t2 = setTimeout("setCommandValue('Show your happy to endless work')",7000);
-				}
-				
-				var userEmotion;
-				function getUserEmotion(x){
-					if (x == 0) {
-						userEmotion = "angry";
+			}
+
+			function setScoreValue(scoreValue){
+				document.getElementById("score").value = scoreValue;
+			}
+							
+			
+			var userEmotion;
+			// get the user's emotion
+			function getUserEmotion(x){
+				if (x == 0) {
+					userEmotion = "angry";
 					} else if (x == 1){
-						userEmotion = "sad";
+					userEmotion = "sad";
 					} else if (x == 2){
-						userEmotion = "surprised";
+					userEmotion = "surprised";
 					} else if (x == 3){
-						userEmotion = "happy";		
+					userEmotion = "happy";		
 					}
 					return userEmotion;							
+			}
+			
+			
+			// Set 4 boolean to run orderly
+			// true: funciton can be realized
+			// This game begins with Happy
+			var round1 = true;
+			// var round1 = false; 
+			// var round2 = true;
+			var round2 = false;
+
+			// Be sure the execution sequence by boolean
+			var happy    = 	true;
+			var surprise = 	false;
+			var sad      = 	false;
+			var angry    = 	false;
+
+			// The round 2, the execution sequence is sured by boolean
+			var round2_1 = true;
+			var round2_2 = false;
+			var round2_3 = false;
+			var round2_4 = false;
+			var round2_5 = false;
+			var round2_6 = false;
+			var round2_7 = false;
+			var round2_8 = false;
+			var round2_9 = false;
+			var round2_10 = false;
+
+			// The boolean means when the game enters into the showing final total score phase
+			var enterScore = false;
+			var score = 0;
+			var totalScore = 0;
+			// identify the date
+			var date;
+
+			
+			// System is loading... --> Round 1, ready? --> Now, follow my order --> 
+			// Show your happy to endless work --> Good, what a positive attitude
+			// Show your surprise for work overtime today --> Relax, that is normal
+			// Show your sad for your boss new Ferrari --> Work hard! --> Then your boss can buy another new one
+			// Show your angry to the coming deadline --> Just do it after this game :)
+
+
+			function startVideo() {
+				// start video
+				vid.play();
+				// start tracking
+				ctrack.start(vid);
+				trackingStarted = true;
+				// start loop to draw face
+				// var t2 = setTimeout("drawLoop()",10000);
+				// var date2 = new Date();
+					// document.getElementById('score').style.visibility = 'visible';
+					// document.getElementById('score').value = "Your score is : " + "+" + score;
+					// document.getElementById('score').value = date2 - date;
+					// drawLoop();	
+					var t2 = setTimeout("drawLoop()",10000);	
+					setCommandValue("System is loading ...");
+					var t2 = setTimeout("setCommandValue('Round 1, ready? 😎')",4000);
+					var t2 = setTimeout("setCommandValue('Now, follow my order 😜')",7000);
+					var t2 = setTimeout("setCommandValue('Show your happy to endless work 😅')",10000);
+
+			}
+
+			
+			// draw the face and detect emotion 
+			function drawLoop() {
+				requestAnimFrame(drawLoop);
+				overlayCC.clearRect(0, 0, vid_width, vid_height);
+				if (ctrack.getCurrentPosition()) {
+					ctrack.draw(overlay);
 				}
+				var cp = ctrack.getCurrentParameters();
+				var er = ec.meanPredict(cp);
+				detectEmtion(er);
+				
+			}
+			
+			// detect the emotion
 
+			// Happy --> surprised --> sad --> angry --> happy --> sad --> happy --> sad --> surprised --> happy
+			// this is a scoring system
+			// if every duration < 1s --> +10, 1s < t < 2s --> +5, t > 2s --> 0
+			// there are 10 orders 
+			
+			function detectEmtion(er){
+				if (er) {
+					updateData(er);
+					for (var i = 0;i < er.length;i++) {
+						// detect the emotion
+						if (er[i].value >= 0.5) {
+							document.getElementById('icon'+(i+1)).style.visibility = 'visible';
 
-				// 设置4个boolean，就是想顺序实现.
-				// true 表示 函数可实现，false 表示 函数不可实现.
-				// 这个游戏由 happy 开头
-				var happy    = 	true;
-				var surprise = 	false;
-				var sad      = 	false;
-				var angry    = 	false;
-
-				// draw the face and detect emotion 
-				function drawLoop() {
-					// 动画效果
-					requestAnimFrame(drawLoop);
-					overlayCC.clearRect(0, 0, vid_width, vid_height);
-					if (ctrack.getCurrentPosition()) {
-						ctrack.draw(overlay);
-					}
-					var cp = ctrack.getCurrentParameters();
-					var er = ec.meanPredict(cp);
-					detectEmtion(er);
-				}
-
-				// detect the emotion
-				function detectEmtion(er){
-					if (er) {
-						updateData(er);
-						for (var i = 0;i < er.length;i++) {
-							// 检测 emotion
-							if (er[i].value > 0.4) {
-								document.getElementById('icon'+(i+1)).style.visibility = 'visible';
+							if(round1){
 								if(i ==3)
-								afterHappy();
+									afterHappy();
 								else if(i == 2)
-								afterSurprise();
+									afterSurprise();
 								else if (i == 1)
-								afterSad();
-							}
-							else {
-								document.getElementById('icon'+(i+1)).style.visibility = 'hidden';
+									afterSad();
+								else if (i == 0)
+									afterAngry();
+								}
+								
+							// Happy --> surprised --> sad --> angry --> angry --> sad --> happy --> sad --> surprised --> happy
+							if(round2){
+								if(i ==3)
+									{
+										round2_1step();
+										round2_5step();
+										round2_7step();
+									}
+								else if(i == 2)
+									{
+										round2_2step();
+										round2_9step();
+									}
+								else if (i == 1)
+									{
+										round2_3step();
+										round2_6step();
+										round2_8step();
+									}
+								else if (i == 0)
+									{
+										round2_4step();
+									}
+								}
+
+							if(enterScore){
+								showTotalScore();
 							}
 
-
+							}
+						else {
+							document.getElementById('icon'+(i+1)).style.visibility = 'hidden';
+							}
 						}
 					}
-				}
-				// function sleep(milliSeconds){
-				// 	var startTime = new Date().getTime(); // get the current time
-				// 	while (new Date().getTime() < startTime + milliSeconds); // hog cpu
-				// }
 
-				// 没办法啊，强制顺序执行，setTimeout就是个坑，和sleep不太一样
-				function orderFunction(a, b){
-					a = false;
-					b = true;
 				}
-				var t;
-				// after user shows a happy emotion
-				function afterHappy(){
-					if(happy){
-							var t3 = setTimeout("setCommandValue('Good, what a positive attitude')",1500);
-							var t4 = setTimeout("setCommandValue('Show your surprise for overtime today')",4000);
-							var t5 = setTimeout("happy = false",1000);
-							var t6 = setTimeout("surprise = true",4000);
+						
+			// set the boolean value: emotion
+			function orderFunction(a, b){
+				a = false;
+				b = true;
+			}
+
+			var t;
+			// after user shows a happy emotion
+			function afterHappy(){
+				if(happy){
+					var t3 = setTimeout("setCommandValue('Good, what a positive attitude 👍')",1500);
+					var t4 = setTimeout("setCommandValue('Show your surprise for overtime today 💀')",4000);
+					var t5 = setTimeout("happy = false",1000);
+					var t6 = setTimeout("surprise = true",4000);
 					}
-					else {
-						return;
+				else {
+					return;
 					}
 				}
-				
-				function afterSurprise(){
-					if(surprise){
-						var t7 = setTimeout("setCommandValue('Relax, it is normal')",1500);
-						var t8 = setTimeout("setCommandValue('See your boss new Ferrari, show your sadness')",4000);	
-						var t9 = setTimeout("surprise = false",1000);
-						var t10 = setTimeout("sad = true",4000);		
+							
+			function afterSurprise(){
+				if(surprise){
+					var t7 = setTimeout("setCommandValue('Relax, it is normal 🤐')",1500);
+					var t8 = setTimeout("setCommandValue('See your boss new Ferrari, show your sad')",4000);	
+					var t9 = setTimeout("surprise = false",1000);
+					var t10 = setTimeout("sad = true",4000);		
 					}
-					else{
-						return;
-					}
-				}
-
-				function afterSad(){
-					if(sad){
-						var t11 = setTimeout("setCommandValue('Work harder and harder !! ')",1500);
-						var t12 = setTimeout("setCommandValue('Then your boss can buy another new one! ')",4000);
-						var t13 = setTimeout("sad = false",1000);
-						var t14 = setTimeout("angry = true",4000);
-					}
-					else{
-						return;
+				else{
+					return;
 					}
 				}
-				
-
-
-
-
-				delete emotionModel['disgusted'];
-				delete emotionModel['fear'];
-				var ec = new emotionClassifier();
-				ec.init(emotionModel);
-				var emotionData = ec.getBlank();
-
-				// draw barchart
-				var margin = {top : 20, right : 20, bottom : 10, left : 40},
-					width = 400 - margin.left - margin.right,
-					height = 100 - margin.top - margin.bottom;
-
-				var barWidth = 30;
-				var formatPercent = d3.format(".0%");
-				var x = d3.scale.linear()
-					.domain([0, ec.getEmotions().length]).range([margin.left, width+margin.left]);
-				var y = d3.scale.linear()
-					.domain([0,1]).range([0, height]);
-
-				var svg = d3.select("#emotion_chart").append("svg")
-					.attr("width", width + margin.left + margin.right)
-					.attr("height", height + margin.top + margin.bottom)
-
-				svg.selectAll("rect").
-					data(emotionData).
-					enter().
-					append("svg:rect").
-					attr("x", function(datum, index) { return x(index); }).
-					attr("y", function(datum) { return height - y(datum.value); }).
-					attr("height", function(datum) { return y(datum.value); }).
-					attr("width", barWidth).
-					attr("fill", "#2d578b");
-
-				svg.selectAll("text.labels").
-					data(emotionData).
-					enter().
-					append("svg:text").
-					attr("x", function(datum, index) { return x(index) + barWidth; }).
-					attr("y", function(datum) { return height - y(datum.value); }).
-					attr("dx", -barWidth/2).
-					attr("dy", "1.2em").
-					attr("text-anchor", "middle").
-					text(function(datum) { return datum.value;}).
-					attr("fill", "white").
-					attr("class", "labels");
-
-				svg.selectAll("text.yAxis").
-					data(emotionData).
-					enter().append("svg:text").
-					attr("x", function(datum, index) { return x(index) + barWidth; }).
-					attr("y", height).
-					attr("dx", -barWidth/2).
-					attr("text-anchor", "middle").
-					attr("style", "font-size: 12").
-					text(function(datum) { return datum.emotion;}).
-					attr("transform", "translate(0, 18)").
-					attr("class", "yAxis");
-				
-				function updateData(data) {
-					// update
-					var rects = svg.selectAll("rect")
-						.data(data)
-						.attr("y", function(datum) { return height - y(datum.value); })
-						.attr("height", function(datum) { return y(datum.value); });
-					var texts = svg.selectAll("text.labels")
-						.data(data)
-						.attr("y", function(datum) { return height - y(datum.value); })
-						.text(function(datum) { return datum.value.toFixed(1);});
-
-					// enter
-					rects.enter().append("svg:rect");
-					texts.enter().append("svg:text");
-
-					// exit
-					rects.exit().remove();
-					texts.exit().remove();
+			
+			function afterSad(){
+				if(sad){
+					var t11 = setTimeout("setCommandValue('Work harder and harder !! 👊')",1500);
+					var t12 = setTimeout("setCommandValue('Then your boss can buy another new one! 😱')",4000);
+					var t12 = setTimeout("setCommandValue('Show your angry for the coming deadline ☹️')",7000);
+					var t13 = setTimeout("sad = false",1000);
+					var t14 = setTimeout("angry = true",4000);
+					}
+				else{
+					return;
 				}
+			}
+			
+			function afterAngry(){
+				if(angry){
+					var t11 = setTimeout("setCommandValue(' Just do it after this game 💪 ')",1500);
+					var t13 = setTimeout("angry = false",1000);
+					var t13 = setTimeout("round2 = true",1500);
+					var t13 = setTimeout("round1 = false",1500);
 
-				// stats 统计
-				stats = new Stats();
-				stats.domElement.style.position = 'absolute';
-				stats.domElement.style.top = '0px';
-				document.getElementById('container').appendChild( stats.domElement );
+					// Good! You have passed Round 1 --> Round 2, follow my order faster
+					var t11 = setTimeout("setCommandValue(' Good! You have passed round 1 👏')",4000);
+					var t11 = setTimeout("setCommandValue(' Round 2, follow my orders faster! 🤝')",6500);
+					var t11 = setTimeout("setCommandValue(' Happy ')",9000);
+					// begin to timing 
+					var date1 = new Date();
+					date = date1;
+					}
+				else{
+					return;
+				}
+			}
 
-				// update stats on every iteration
-				document.addEventListener('clmtrackrIteration', function(event) {
-					stats.update();
-				}, false);
+			function valueScore(duration){
+				if(duration <= 1000)
+					{
+						return 10;}
+				else if(duration <= 2000)
+					{
+						return 5;}
+				else 
+					{
+						return 0;}
+			}
 
-			</script>
-		</div>
+
+			function round2_1step(){
+				if(round2_1){
+
+					round2_1 = false;
+					var t = setTimeout("setCommandValue(' Surprised ')",500);
+					var t = setTimeout("round2_2 = true", 500);
+
+					var date1 = new Date();
+					// because time has delayed 9000 ms
+					score = valueScore(date1 - date - 9000);
+					totalScore += score;
+					document.getElementById('score').style.visibility = 'visible';
+					document.getElementById('score').value = "Your score is : " + "+" + score;
+					date = date1;
+				}
+				else{
+					return;
+				}
+			}
+
+			function round2_2step(){
+				if(round2_2){
+					round2_2 = false;
+					var t = setTimeout("setCommandValue(' Sad ')",500);
+					var t = setTimeout("round2_3 = true", 500);
+
+					var date1 = new Date()
+					score = valueScore(date1 - date - 500);
+					totalScore += score;
+					document.getElementById('score').style.visibility = 'visible';
+					document.getElementById('score').value = "Your score is : " + "+" + score;
+					date = date1;
+				}
+				else{
+					return;
+				}
+			}
+			function round2_3step(){
+				if(round2_3){
+					round2_3 = false;
+					var t = setTimeout("setCommandValue(' Angry ')",500);
+					var t = setTimeout("round2_4 = true", 500);
+
+					var date1 = new Date()
+					score = valueScore(date1 - date - 500);
+					totalScore += score;					
+					document.getElementById('score').style.visibility = 'visible';
+					document.getElementById('score').value = "Your score is : " + "+" + score;
+					date = date1;
+				}
+				else{
+					return;
+				}
+			}
+			function round2_4step(){
+				if(round2_4){
+					round2_4 = false;
+					var t = setTimeout("setCommandValue(' Happy ')",500);
+					var t = setTimeout("round2_5 = true", 500);
+
+					var date1 = new Date()
+					score = valueScore(date1 - date - 500);
+					totalScore += score;
+					document.getElementById('score').style.visibility = 'visible';
+					document.getElementById('score').value = "Your score is : " + "+" + score;
+					date = date1;
+				}
+				else{
+					return;
+				}
+			}
+			function round2_5step(){
+				if(round2_5){
+					round2_5 = false;
+					var t = setTimeout("setCommandValue(' Sad ')",500);
+					var t = setTimeout("round2_6 = true", 500);
+
+					var date1 = new Date()
+					score = valueScore(date1 - date - 500);
+					totalScore += score;
+					document.getElementById('score').style.visibility = 'visible';
+					document.getElementById('score').value = "Your score is : " + "+" + score;
+					date = date1;
+				}
+				else{
+					return;
+				}
+			}
+			function round2_6step(){
+				if(round2_6){
+					round2_6 = false;
+					var t = setTimeout("setCommandValue(' Happy ')",500);
+					var t = setTimeout("round2_7 = true", 500);
+
+					var date1 = new Date()
+					score = valueScore(date1 - date - 500);
+					totalScore += score;
+					document.getElementById('score').style.visibility = 'visible';
+					document.getElementById('score').value = "Your score is : " + "+" + score;
+					date = date1;
+				}
+				else{
+					return;
+				}
+			}
+			function round2_7step(){
+				if(round2_7){
+					round2_7 = false;
+					var t = setTimeout("setCommandValue(' Sad ')",500);
+					var t = setTimeout("round2_8 = true", 500);
+
+					var date1 = new Date()
+					score = valueScore(date1 - date - 500);
+					totalScore += score;
+					document.getElementById('score').style.visibility = 'visible';
+					document.getElementById('score').value = "Your score is : " + "+" + score;
+					date = date1;
+				}
+				else{
+					return;
+				}
+			}
+			function round2_8step(){
+				if(round2_8){
+					round2_8 = false;
+					var t = setTimeout("setCommandValue(' Surprised ')",500);
+					var t = setTimeout("round2_9 = true", 500);
+
+					var date1 = new Date()
+					score = valueScore(date1 - date - 500);
+					totalScore += score;
+					document.getElementById('score').style.visibility = 'visible';
+					document.getElementById('score').value = "Your score is : " + "+" + score;
+					date = date1;
+				}
+				else{
+					return;
+				}
+			}
+			function round2_9step(){
+				if(round2_9){
+					round2_9 = false;
+					var t = setTimeout("setCommandValue(' Happy ')",500);
+
+					// enter to the final scoring part
+					var t = setTimeout("enterScore = true",500);
+
+					var date1 = new Date()
+					score = valueScore(date1 - date - 500);
+					totalScore += score;
+					document.getElementById('score').style.visibility = 'visible';
+					document.getElementById('score').value = "Your score is : " + "+" + score;
+					date = date1;
+
+				}
+				else{
+					return;
+				}
+			}
+
+
+			// if the result >= 80 --> Your mark is ** , what a emotion madman
+			// 50 <= result < 80   --> Your mark is ** , what a flexible face
+			// 20 <= result < 50   --> Your mark is ** , what a poker face
+			// result < 20         --> Your mark is ** , what a stiff upper lip
+			function showTotalScore(){
+				if(totalScore < 20){
+					document.getElementById('score').style.visibility = 'visible';
+					document.getElementById('score').value = "Your total score is " + totalScore;
+					var t = setTimeout("setScoreValue(' Stiff upper lip  🤖')",2000);
+				}
+				else if (totalScore <50){
+					document.getElementById('score').style.visibility = 'visible';
+					document.getElementById('score').value = "Your total score is " + totalScore;
+					var t = setTimeout("setScoreValue(' what a poker face 👽')",2000);
+				}
+				else if (totalScore <80){
+					document.getElementById('score').style.visibility = 'visible';
+					document.getElementById('score').value = "Your total score is " + totalScore;
+					var t = setTimeout("setScoreValue(' what a flexible face 😝')",2000);
+				}
+				else{
+					document.getElementById('score').style.visibility = 'visible';
+					document.getElementById('score').value = "Your total score is " + totalScore;
+					var t = setTimeout("setScoreValue(' what an emotion madman 🤡')",2000);
+				}
+			}
+			
+			delete emotionModel['disgusted'];
+			delete emotionModel['fear'];
+			// delete emotionModel['fear'];
+			var ec = new emotionClassifier();
+			ec.init(emotionModel);
+			var emotionData = ec.getBlank();
+			
+			// draw the emotion barchart
+			var margin = {top : 20, right : 20, bottom : 10, left : 40},
+			width = 400 - margin.left - margin.right,
+			height = 100 - margin.top - margin.bottom;
+			
+			var barWidth = 30;
+			var formatPercent = d3.format(".0%");
+			var x = d3.scale.linear()
+				.domain([0, ec.getEmotions().length]).range([margin.left, width+margin.left]);
+			var y = d3.scale.linear()
+				.domain([0,1]).range([0, height]);
+			
+			var svg = d3.select("#emotion_chart").append("svg")
+				.attr("width", width + margin.left + margin.right)
+				.attr("height", height + margin.top + margin.bottom)
+
+			svg.selectAll("rect").
+			data(emotionData).
+			enter().
+			append("svg:rect").
+			attr("x", function(datum, index) { return x(index); }).
+			attr("y", function(datum) { return height - y(datum.value); }).
+			attr("height", function(datum) { return y(datum.value); }).
+			attr("width", barWidth).
+			attr("fill", "#2d578b");
+			
+			svg.selectAll("text.labels").
+			data(emotionData).
+			enter().
+			append("svg:text").
+			attr("x", function(datum, index) { return x(index) + barWidth; }).
+			attr("y", function(datum) { return height - y(datum.value); }).
+			attr("dx", -barWidth/2).
+			attr("dy", "1.2em").
+			attr("text-anchor", "middle").
+			text(function(datum) { return datum.value;}).
+			attr("fill", "white").
+			attr("class", "labels");
+			
+			svg.selectAll("text.yAxis").
+			data(emotionData).
+			enter().append("svg:text").
+			attr("x", function(datum, index) { return x(index) + barWidth; }).
+			attr("y", height).
+			attr("dx", -barWidth/2).
+			attr("text-anchor", "middle").
+			attr("style", "font-size: 12").
+			text(function(datum) { return datum.emotion;}).
+			attr("transform", "translate(0, 18)").
+			attr("class", "yAxis");
+							
+			function updateData(data) {
+				// update
+				var rects = svg.selectAll("rect")
+					.data(data)
+					.attr("y", function(datum) { return height - y(datum.value); })
+					.attr("height", function(datum) { return y(datum.value); });
+				var texts = svg.selectAll("text.labels")
+					.data(data)
+					.attr("y", function(datum) { return height - y(datum.value); })
+					.text(function(datum) { return datum.value.toFixed(1);});
+
+				// enter
+				rects.enter().append("svg:rect");
+				texts.enter().append("svg:text");
+			
+				// exit
+				rects.exit().remove();
+				texts.exit().remove();
+			}
+		
+			// stats
+			stats = new Stats();
+			stats.domElement.style.position = 'absolute';
+			stats.domElement.style.top = '0px';
+			document.getElementById('container').appendChild( stats.domElement );
+
+			// update stats on every iteration
+			document.addEventListener('clmtrackrIteration', function(event) {
+				stats.update();
+			}, false);
+
+		</script>
 	</body>
 </html>
