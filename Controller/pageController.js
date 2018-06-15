@@ -229,7 +229,7 @@ function afterHappy(){
 function afterSurprise(){
     if(surprise){
         var t7 = setTimeout("setCommandValue('Relax, it is normal 🤐')",1500);
-        var t8 = setTimeout("setCommandValue('See your boss new Ferrari, show your sad')",4000);	
+        var t8 = setTimeout("setCommandValue('See your boss Ferrari, show sad')",4000);	
         var t9 = setTimeout("surprise = false",1000);
         var t10 = setTimeout("sad = true",4000);		
         }
@@ -241,8 +241,8 @@ function afterSurprise(){
 function afterSad(){
     if(sad){
         var t11 = setTimeout("setCommandValue('Work harder and harder !! 👊')",1500);
-        var t12 = setTimeout("setCommandValue('Then your boss can buy another new one! 😱')",4000);
-        var t12 = setTimeout("setCommandValue('Show your angry for the coming deadline ☹️')",7000);
+        var t12 = setTimeout("setCommandValue('Then your boss can buy another one! 😱')",4000);
+        var t12 = setTimeout("setCommandValue('Show your angry for coming deadline ☹️')",7000);
         var t13 = setTimeout("sad = false",1000);
         var t14 = setTimeout("angry = true",4000);
         }
