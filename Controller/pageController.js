@@ -7,7 +7,7 @@ var overlayCC = overlay.getContext('2d');
 var ctrack = new clm.tracker({useWebGL : true});
 var trackingStarted = false;
 var userEmotion;
-var round1 = true;
+var round1 = false;
 // var round1 = false; 
 // var round2 = true;
 var round2 = false;
@@ -72,6 +72,7 @@ function startVideo() {
     var t2 = setTimeout("setCommandValue('Round 1, ready? 😎')",4000);
     var t2 = setTimeout("setCommandValue('Now, follow my order 😜')",7000);
     var t2 = setTimeout("setCommandValue('Show your happy to endless work 😅')",10000);
+    var t9 = setTimeout(" round1 = true",10000);
 
 }
 
