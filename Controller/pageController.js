@@ -66,8 +66,8 @@ function startVideo() {
     ctrack.start(vid);
     trackingStarted = true;
     // start loop to draw face
-    drawLoop();	
-//     var t2 = setTimeout("drawLoop()",10000);	
+//     drawLoop();	
+	var t2 = setTimeout("drawLoop()",10000);	
     setCommandValue("System is loading ...");
     var t2 = setTimeout("setCommandValue('Round 1, ready? 😎')",4000);
     var t2 = setTimeout("setCommandValue('Now, follow my order 😜')",7000);
