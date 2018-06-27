@@ -255,7 +255,7 @@ function afterAngry(){
     if(angry){
         var t11 = setTimeout("setCommandValue(' Just do it after this game 💪 ')",1500);
         var t13 = setTimeout("angry = false",1000);
-        var t13 = setTimeout("round2 = true",1500);
+        var t13 = setTimeout("round2 = true",9000);
         var t13 = setTimeout("round1 = false",1500);
 
         // Good! You have passed Round 1 --> Round 2, follow my order faster
